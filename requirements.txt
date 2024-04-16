@@ -1,9 +1,6 @@
 fastapi~=0.110.1
 uvicorn[standard]
 pydantic<2.0.0
-fastapi~=0.110.1
-uvicorn[standard]
-pydantic<2.0.0
 beautifulsoup4
 Scrapy
 Requests
@@ -22,3 +19,7 @@ torch
 yake
 sentence_transformers
 numpy
+gensim
+numpy
+seaborn
+matplotlib
