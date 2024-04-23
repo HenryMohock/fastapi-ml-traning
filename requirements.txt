@@ -23,3 +23,4 @@ gensim
 numpy
 seaborn
 matplotlib
+textdistance
