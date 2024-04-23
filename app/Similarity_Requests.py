@@ -33,7 +33,7 @@ post_method = 'calculate_similarity'
 
 # Строки для сравнения
 line_1 = get_text_of_string('line1.txt')  # 'This is a test string'
-line_2 = get_text_of_string('line1.txt')  # 'This is another test string'
+line_2 = get_text_of_string('line2.txt')  # 'This is another test string'
 
 # Создание массива методов на основе Edit based
 methods_edit_based = ["hamming", "mlipns", "levenshtein", "damerau_levenshtein",
