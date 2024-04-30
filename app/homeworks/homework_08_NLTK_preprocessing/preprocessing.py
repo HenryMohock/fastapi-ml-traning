@@ -55,6 +55,7 @@ def perform_text_analysis(text, chunk_size, type_tokenization, n):
                 print(pos_tag)
                 print("Время выполнения операции POS-тегирование:", format_time(time.time() - start_time))
 
+            # Самый долгий процесс
             if input("Хотите выполнить Анализ тональности текста? (yes/no): ").lower() == "yes":
                 start_time = time.time()
                 analyze_sentiment = txt_analysis.analyze_sentiment()
@@ -63,7 +64,6 @@ def perform_text_analysis(text, chunk_size, type_tokenization, n):
                 print("Время выполнения операции анализа тональности:", format_time(time.time() - start_time))
                 plot_sentiment_pie(analyze_sentiment)
 
-            # Самый долгий процесс
             if input("Хотите выполнить Вычисление частоты встречаемости слов с сортировкой результатов? (yes/no): ").lower() == "yes":
                 start_time = time.time()
                 word_frequency = txt_analysis.word_frequency_sorted()
