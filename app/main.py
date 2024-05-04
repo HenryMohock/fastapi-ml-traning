@@ -15,6 +15,13 @@ from app.core.config import settings
 from app.core.event_handler import start_app_handler, stop_app_handler
 from fastapi.staticfiles import StaticFiles  # для публикации index.html
 
+from app.homeworks.homework_09_classifier.Classifier import NLTKClassifier, CsvPreProcessing
+from nltk.sentiment import SentimentIntensityAnalyzer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+
 app = FastAPI(title=settings.PROJECT_NAME)
 
 app.include_router(heartbeat_router)
@@ -158,6 +165,7 @@ def calculate_method(method, line1, line2):
     else:
         return None
 
+
 def calculate_similarity(data):
     method = data.get('method')
     line1 = data.get('line1')
@@ -179,6 +187,101 @@ async def calculate_similarity_endpoint(data: dict):
     }
     return response_data
 
+
+def get_models(name_model):
+    if name_model == 'MultinomialNB':
+        models = {"Multinomial Naive Bayes": MultinomialNB()}
+    elif name_model == 'SVC':
+        models = {"Support Vector Machine": SVC(kernel='poly')}
+    elif name_model == 'LogisticRegression':
+        models = {"Logistic Regression": LogisticRegression()}
+    elif name_model == 'RandomForestClassifier':
+        models = {"Random Forest": RandomForestClassifier()}
+    else:
+        models = {
+            "Multinomial Naive Bayes": MultinomialNB(),
+            "Support Vector Machine": SVC(),
+            "Logistic Regression": LogisticRegression(),
+            "Random Forest": RandomForestClassifier()
+        }
+    return models
+
+
+def get_data(word_count: int = 0):
+    # Параметры текста
+    encoding = 'utf8'
+    lang = 'english'
+
+    # Путь к файлу CSV
+    file_path = "../../data/IMDB Dataset.csv"
+
+    # Имя извлекаемой колонки файла CSV
+    column_name = 'review'
+
+    # Регулярное выражение для удаления прочих символов
+    regular_expression = r'blah|_|fffc|br|oz'
+
+    # Порог встречаемости слов
+    threshold = 6
+
+    # Метод обрезки слов (lemmatization или стемминг)
+    method = 'lemmatization'
+
+    # Инициализация экземпляра CsvPreProcessing
+    csv_processor = CsvPreProcessing(file_path, column_name, regular_expression, threshold, method, encoding, lang)
+
+    # Получаем текст из CsvPreProcessing
+    text = csv_processor.get_text
+    if word_count != 0:
+        text = " ".join(text.split()[:word_count])
+
+    # Создание объекта для анализа тональности
+    sia = SentimentIntensityAnalyzer()
+    sentiment_labels = []
+
+    # Разбиваем текст на слова
+    words = text.split()  # word_tokenize(text)
+
+    # Анализируем настроение каждого слова и добавляем метку в список
+    for word in words:
+        sentiment_score = sia.polarity_scores(word)
+        # Определяем метку настроения на основе compound score
+        if sentiment_score['compound'] >= 0.05:
+            label = 'positive'
+        elif sentiment_score['compound'] <= -0.05:
+            label = 'negative'
+        else:
+            label = 'neutral'
+        sentiment_labels.append((word, label))
+
+    return sentiment_labels
+
+
+def train_classify_models(data):
+    name_model = data.get('model')
+    training_set = data.get('training_set')
+    testing_set = data.get('testing_set')
+    models = get_models(name_model)
+
+    results = {}
+    classifier = NLTKClassifier()
+
+    for model_name, model in models.items():
+        accuracy = classifier.train_and_evaluate_model(model, training_set, testing_set)
+        results[model_name] = accuracy
+
+    return results
+
+
+@app.post("/train_classify_models/")
+async def train_classify_models_endpoint(data: dict):
+    results = train_classify_models(data)
+    if results is None:
+        raise HTTPException(status_code=400, detail="Invalid method specified")
+
+    return results
+
+
 # ==========================================================
 # ==========================================================
 
@@ -187,5 +290,3 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="127.0.0.1", port=8000, log_level="debug")
-
-
