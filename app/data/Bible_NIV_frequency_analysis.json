@@ -1,0 +1,82 @@
+[
+    {
+        "source": [
+            "lived",
+            "year",
+            "son"
+        ],
+        "target": 18
+    },
+    {
+        "source": [
+            "year",
+            "son",
+            "daughter"
+        ],
+        "target": 17
+    },
+    {
+        "source": [
+            "lived",
+            "year",
+            "became"
+        ],
+        "target": 15
+    },
+    {
+        "source": [
+            "year",
+            "became",
+            "father"
+        ],
+        "target": 15
+    },
+    {
+        "source": [
+            "creature",
+            "move",
+            "along"
+        ],
+        "target": 12
+    },
+    {
+        "source": [
+            "lived",
+            "total",
+            "year"
+        ],
+        "target": 10
+    },
+    {
+        "source": [
+            "move",
+            "along",
+            "ground"
+        ],
+        "target": 9
+    },
+    {
+        "source": [
+            "son",
+            "daughter",
+            "altogether"
+        ],
+        "target": 9
+    },
+    {
+        "source": [
+            "total",
+            "year",
+            "died"
+        ],
+        "target": 9
+    },
+    {
+        "source": [
+            "god",
+            "said",
+            "let"
+        ],
+        "target": 8
+    }
+]

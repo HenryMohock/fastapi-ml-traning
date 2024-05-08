@@ -1,0 +1,202 @@
+[
+    {
+        "source": "father",
+        "target": 251
+    },
+    {
+        "source": "jacob",
+        "target": 203
+    },
+    {
+        "source": "joseph",
+        "target": 170
+    },
+    {
+        "source": "aaham",
+        "target": 121
+    },
+    {
+        "source": "daughter",
+        "target": 100
+    },
+    {
+        "source": "pharaoh",
+        "target": 90
+    },
+    {
+        "source": "servant",
+        "target": 86
+    },
+    {
+        "source": "earth",
+        "target": 84
+    },
+    {
+        "source": "egypt",
+        "target": 83
+    },
+    {
+        "source": "isaac",
+        "target": 83
+    },
+    {
+        "source": "others",
+        "target": 81
+    },
+    {
+        "source": "lived",
+        "target": 66
+    },
+    {
+        "source": "became",
+        "target": 63
+    },
+    {
+        "source": "water",
+        "target": 55
+    },
+    {
+        "source": "ought",
+        "target": 55
+    },
+    {
+        "source": "people",
+        "target": 55
+    },
+    {
+        "source": "laban",
+        "target": 55
+    },
+    {
+        "source": "child",
+        "target": 53
+    },
+    {
+        "source": "named",
+        "target": 51
+    },
+    {
+        "source": "genesis",
+        "target": 50
+    },
+    {
+        "source": "place",
+        "target": 49
+    },
+    {
+        "source": "called",
+        "target": 46
+    },
+    {
+        "source": "woman",
+        "target": 46
+    },
+    {
+        "source": "seven",
+        "target": 45
+    },
+    {
+        "source": "flock",
+        "target": 44
+    },
+    {
+        "source": "canaan",
+        "target": 43
+    },
+    {
+        "source": "household",
+        "target": 43
+    },
+    {
+        "source": "every",
+        "target": 41
+    },
+    {
+        "source": "israel",
+        "target": 41
+    },
+    {
+        "source": "rachel",
+        "target": 40
+    },
+    {
+        "source": "ground",
+        "target": 39
+    },
+    {
+        "source": "blessed",
+        "target": 39
+    },
+    {
+        "source": "dream",
+        "target": 39
+    },
+    {
+        "source": "living",
+        "target": 38
+    },
+    {
+        "source": "asked",
+        "target": 38
+    },
+    {
+        "source": "animal",
+        "target": 36
+    },
+    {
+        "source": "house",
+        "target": 36
+    },
+    {
+        "source": "found",
+        "target": 35
+    },
+    {
+        "source": "sarah",
+        "target": 35
+    },
+    {
+        "source": "replied",
+        "target": 34
+    },
+    {
+        "source": "master",
+        "target": 34
+    },
+    {
+        "source": "great",
+        "target": 33
+    },
+    {
+        "source": "field",
+        "target": 33
+    },
+    {
+        "source": "night",
+        "target": 32
+    },
+    {
+        "source": "answered",
+        "target": 32
+    },
+    {
+        "source": "descendant",
+        "target": 32
+    },
+    {
+        "source": "rebekah",
+        "target": 31
+    },
+    {
+        "source": "creature",
+        "target": 29
+    },
+    {
+        "source": "livestock",
+        "target": 28
+    },
+    {
+        "source": "become",
+        "target": 28
+    }
+]
