@@ -24,3 +24,6 @@ numpy
 seaborn
 matplotlib
 textdistance
+googletrans
+hmmlearn
+python-crfsuite
