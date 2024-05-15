@@ -1,0 +1,9 @@
+{
+    "model_type":"gtos",
+    "version":"0.1.0", 
+    "date":"2020-12-30",
+    "inference_module":".generate_t5wtense.inference", 
+    "inference_class":"Inference",
+    "model_fn":"pytorch_model.bin",
+    "kwargs":{}
+}
