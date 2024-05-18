@@ -11,7 +11,7 @@ nltk
 scikit-learn
 SpaCy
 gensim
-scipy
+scipy~=1.11.4
 textblob
 rake_nltk
 transformers
@@ -27,3 +27,4 @@ textdistance
 googletrans
 hmmlearn
 python-crfsuite
+gensim
