@@ -22,6 +22,16 @@ from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 
+from pydantic import BaseModel
+from typing import List, Dict
+from gensim.models.doc2vec import Doc2Vec
+from sklearn.cluster import KMeans
+import os
+from sklearn.metrics import silhouette_score
+from collections import Counter
+from typing import List, Dict, Tuple
+from nltk.corpus import stopwords
+
 app = FastAPI(title=settings.PROJECT_NAME)
 
 app.include_router(heartbeat_router)
@@ -41,7 +51,7 @@ async def read_root():
 # ==========================================================
 
 
-# REQUESTS
+# POST REQUEST 1 (calculate_similarity)
 # ==========================================================
 # ==========================================================
 
@@ -188,6 +198,10 @@ async def calculate_similarity_endpoint(data: dict):
     return response_data
 
 
+# POST REQUEST 2 (train_classify_models)
+# ==========================================================
+# ==========================================================
+
 def get_models(name_model):
     if name_model == 'MultinomialNB':
         models = {"Multinomial Naive Bayes": MultinomialNB()}
@@ -281,6 +295,102 @@ async def train_classify_models_endpoint(data: dict):
 
     return results
 
+
+# POST REQUEST 3 (group_sentences)
+# ==========================================================
+# ==========================================================
+
+# Загрузить список стоп-слов
+stop_words = set(stopwords.words('english'))
+
+# Загрузим ранее обученную модель
+model_path = 'models/doc2vec/doc2vec_combined.model'
+try:
+    if os.path.isfile(model_path):
+        model = Doc2Vec.load(model_path)
+    else:
+        print("Файл модели не найден")
+        exit()
+except Exception as e:
+    print(f'Произошла ошибка: {e}')
+
+
+class SentencesRequest(BaseModel):
+    sentences: List[str]
+    max_clusters: int = 10
+
+
+def determine_optimal_clusters(vectors: List, texts: List[str], max_clusters: int = 10) -> Tuple[int, List[str]]:
+    try:
+        sse = []
+        silhouette_scores = []
+        for num_clusters in range(2, min(max_clusters + 1, len(vectors))):
+            kmeans = KMeans(n_clusters=num_clusters, random_state=0)
+            kmeans.fit(vectors)
+            sse.append(kmeans.inertia_)
+            if 1 < num_clusters < len(vectors):
+                silhouette_scores.append(silhouette_score(vectors, kmeans.labels_))
+            else:
+                silhouette_scores.append(float('-inf'))  # Для несовместимых значений
+
+        # Возвращаем количество кластеров с наибольшим силуэтным индексом
+        optimal_clusters = range(2, min(max_clusters + 1, len(vectors)))[silhouette_scores.index(max(silhouette_scores))]
+
+        # Кластеризация для получения имен тем
+        kmeans = KMeans(n_clusters=optimal_clusters, random_state=0)
+        kmeans.fit(vectors)
+        labels = kmeans.labels_
+
+        # Получение наиболее частых пар слов для каждого кластера
+        # Слова фильтруются по длине (не менее 6 букв) и исключаются стоп-слова.
+        # Находятся две наиболее частые пары слов для каждого кластера.
+        # Если найдено менее двух подходящих слов, добавляется только имеющиеся слова или пустая строка,
+        # если нет подходящих слов.
+        topic_words = []
+        for i in range(optimal_clusters):
+            cluster_texts = [texts[j] for j in range(len(texts)) if labels[j] == i]
+            all_words = ' '.join(cluster_texts).split()
+            # Фильтруем слова, исключая стоп-слова и слова короче 6 букв
+            filtered_words = [word for word in all_words if word.lower() not in stop_words and len(word) >= 6]
+            # Получаем две наиболее частые пары слов
+            most_common_words = [word for word, count in Counter(filtered_words).most_common(2)]
+            if len(most_common_words) == 2:
+                topic_words.append(' '.join(most_common_words))
+            else:
+                topic_words.append(' '.join(most_common_words) if most_common_words else "")
+
+        return optimal_clusters, topic_words
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error in determine_optimal_clusters: {e}")
+
+
+@app.post("/group_sentences/")
+async def group_sentences(request: SentencesRequest):
+    try:
+        # Загрузить ранее сохраненную модель
+        model = Doc2Vec.load(model_path)
+
+        # Получение векторов для предложений
+        vectors = [model.infer_vector(sentence.split()) for sentence in request.sentences]
+
+        # Определение оптимального количества кластеров и их имен
+        num_clusters, topic_names = determine_optimal_clusters(vectors, request.sentences, request.max_clusters)
+
+        # Кластеризация предложений
+        kmeans = KMeans(n_clusters=num_clusters, random_state=0)
+        kmeans.fit(vectors)
+        labels = kmeans.labels_
+
+        # Группировка предложений по темам
+        grouped_sentences = {}
+        for label, sentence in zip(labels, request.sentences):
+            topic = topic_names[label]
+            if topic not in grouped_sentences:
+                grouped_sentences[topic] = []
+            grouped_sentences[topic].append(sentence)
+        return grouped_sentences
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid parameter group_sentences: {e}")
 
 # ==========================================================
 # ==========================================================
