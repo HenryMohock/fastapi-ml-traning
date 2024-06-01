@@ -32,6 +32,16 @@ from collections import Counter
 from typing import List, Dict, Tuple
 from nltk.corpus import stopwords
 
+import pandas as pd
+import re
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.tokenize import RegexpTokenizer
+from nltk.stem import WordNetLemmatizer
+import spacy
+
+
+
 app = FastAPI(title=settings.PROJECT_NAME)
 
 app.include_router(heartbeat_router)
@@ -391,6 +401,121 @@ async def group_sentences(request: SentencesRequest):
         return grouped_sentences
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid parameter group_sentences: {e}")
+
+
+# POST REQUEST 4 (nltk_preprocessing, spacy_preprocessing)
+# ==========================================================
+# ==========================================================
+
+def spacy_preprocessing_text(text):
+    # Загрузка модели SpaCy
+    nlp = spacy.load("en_core_web_sm")
+
+    # Функция для обработки части текста
+    def process_text_chunk(chunk):
+        doc = nlp(chunk)
+        tokens = [token.text for token in doc if not token.is_stop and token.is_alpha]
+        return tokens
+
+    # Функция для лемматизации части текста
+    def lemmatize_text_chunk(chunk):
+        doc = nlp(chunk)
+        return [token.lemma_ for token in doc]
+
+    # Обработка текста с помощью регулярного выражения
+    regex_patterns = r'blah|_|fffc|br|oz|< />|<br />|\d+|\W+'
+    text = re.sub(regex_patterns, ' ', text)
+
+    # Разбиваем текст на части по 100000 символов
+    chunk_size = 100000
+    chunks = [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
+
+    # Обрабатываем каждую часть и объединяем результаты
+    all_tokens = []
+    for chunk in chunks:
+        all_tokens.extend(process_text_chunk(chunk))
+
+    # Подсчет частоты слов
+    word_freq = Counter(all_tokens)
+
+    # Определение редких слов (слова, которые встречаются менее 5 раз)
+    rare_words = {word for word, count in word_freq.items() if count < 5}
+
+    # Удаление редких слов
+    filtered_tokens = [word for word in all_tokens if word not in rare_words]
+
+    # Разбиваем текст на части по 100000 символов для лемматизации
+    filtered_text = ' '.join(filtered_tokens)
+    filtered_chunks = [filtered_text[i:i + chunk_size] for i in range(0, len(filtered_text), chunk_size)]
+
+    # Лемматизация каждой части и объединение результатов
+    lemmatized_tokens = []
+    for chunk in filtered_chunks:
+        lemmatized_tokens.extend(lemmatize_text_chunk(chunk))
+
+    # Объединение обработанных токенов в строку
+    cleaned_text = ' '.join(lemmatized_tokens)
+
+    # Возврат обработанного текста
+    return cleaned_text
+
+
+def nltk_preprocessing_text(text):
+    nltk.download('punkt')
+    nltk.download('stopwords')
+    nltk.download('wordnet')
+
+    # Преобразование текста к нижнему регистру
+    text = text.lower()
+
+    # Токенизация текста с использованием регулярного выражения
+    regex_patterns = r'blah|_|fffc|br|oz|< />|<br />|\d|\w+'
+    tokenizer = RegexpTokenizer(regex_patterns)
+    tokens = tokenizer.tokenize(text)
+
+    # Токенизация текста
+    tokens = word_tokenize(text)
+
+    # Загрузка стоп-слов
+    stop_words = set(stopwords.words('english'))
+
+    # Удаление стоп-слов
+    tokens = [word for word in tokens if word.isalpha() and word not in stop_words]
+
+    # Подсчет частоты слов
+    word_freq = Counter(tokens)
+
+    # Определение редких слов (слова, которые встречаются менее 5 раз)
+    rare_words = {word for word, count in word_freq.items() if count < 5}
+
+    # Удаление редких слов
+    tokens = [word for word in tokens if word not in rare_words]
+
+    # Лемматизация
+    lemmatizer = WordNetLemmatizer()
+    tokens = [lemmatizer.lemmatize(word) for word in tokens]
+
+    # Объединение обработанных токенов в строку
+    cleaned_text = ' '.join(tokens)
+
+    # Возврат обработанного текста
+    return cleaned_text
+
+
+class DataRequest(BaseModel):
+    data: str
+
+
+@app.post("/nltk_preprocessing/")
+async def nltk_preprocessing(request: DataRequest):
+    response_data = {'nltk_cleaned_text': nltk_preprocessing_text(request.data)}
+    return response_data
+
+
+@app.post("/spacy_preprocessing/")
+async def spacy_preprocessing(request: DataRequest):
+    response_data = {'spacy_cleaned_text': spacy_preprocessing_text(request.data)}
+    return response_data
 
 # ==========================================================
 # ==========================================================
