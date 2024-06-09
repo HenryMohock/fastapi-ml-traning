@@ -5,19 +5,20 @@ from spacy.language import Language
 
 class AdditionalComponents:
     """
-    Класс AdditionalComponents
+    Класс AdditionalComponents предназначен для определения и добавления дополнительных компонентов
 
-    предназначен для определения и добавления дополнительных компонентов
     обработки текста в пайплайн SpaCy.
 
     Attributes:
     ----------
     nlp : spacy.language.Language
         Объект языковой модели SpaCy, в который будут добавлены компоненты.
+    words : list
+        Список слов и биграмм для подсчета их вхождений в тексте.
 
     Methods:
     -------
-    __init__(self, nlp):
+    __init__(self, nlp, words):
         Инициализирует класс с объектом языковой модели SpaCy и устанавливает расширения.
 
     setup_extensions(self):
@@ -39,7 +40,7 @@ class AdditionalComponents:
         Компонент для подсчета количества встречающихся слов и биграмм в документе.
     """
 
-    def __init__(self, nlp):
+    def __init__(self, nlp, words):
         """
         Инициализирует класс AdditionalComponents.
 
@@ -47,8 +48,11 @@ class AdditionalComponents:
         -----------
         nlp : spacy.language.Language
             Объект языковой модели SpaCy, в который будут добавлены компоненты.
+        words : list
+            Список слов и биграмм для подсчета их вхождений в тексте.
         """
         self.nlp = nlp
+        self.words = words
         self.setup_extensions()
 
     def setup_extensions(self):
@@ -144,23 +148,22 @@ class AdditionalComponents:
         Returns:
         Doc: Обработанный объект документа SpaCy.
         """
-        words = ["SpaceX", "Flight 4", "Starship", "Elon Musk"]
-        word_counts = {word: 0 for word in words}
+        word_counts = {word: 0 for word in self.words}
         for token in doc:
             token_text = token.text
-            if token_text in word_counts:
+            if token_text in self.words:
                 word_counts[token_text] += 1
         for i in range(len(doc) - 1):
             bigram = f"{doc[i].text} {doc[i+1].text}"
-            if bigram in word_counts:
+            if bigram in self.words:
                 word_counts[bigram] += 1
         doc._.word_counts = word_counts
         return doc
 
-
 # Инициализация модели spaCy и компонентов
 nlp = spacy.load('en_core_web_sm')
-additional_components = AdditionalComponents(nlp)
+words_to_count = ["SpaceX", "Flight 4", "Starship", "Elon Musk"]
+additional_components = AdditionalComponents(nlp, words_to_count)
 
 
 # Добавление компонентов в пайплайн с использованием декораторов @Language.component
@@ -188,6 +191,7 @@ def sentence_count_component(doc):
 def word_count_component(doc):
     return additional_components.word_count_component(doc)
 
+
 # Добавление компонентов в пайплайн
 nlp.add_pipe('length_component', last=True)
 nlp.add_pipe('sentence_length_component', last=True)
@@ -205,11 +209,11 @@ doc = nlp(text)
 # Вывод результатов
 print()
 for token in doc:
-    print(f"Token: {token.text}, Length: {token._.length}")
+    print(f"Length: {token._.length},   Token: {token.text}")
 
 print()
 for sent in doc._.sentences:
-    print(f"Length: {sent._.length}, Sentence: {sent.text}")
+    print(f"Length: {sent._.length},    Sentence: {sent.text}")
 
 print()
 print(f"Total document length: {doc._.total_length} characters")
