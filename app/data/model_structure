@@ -1,0 +1,20 @@
+digraph G {
+concentrate=True;
+dpi=200;
+rankdir=TB;
+splines=ortho;
+node [shape=record];
+1559500736464 [border=0, fontname=Helvetica, label=<<table border="0" cellborder="1" bgcolor="black" cellpadding="10"><tr><td colspan="1" bgcolor="black"><font point-size="16" color="white"><b>embedding</b> (Embedding)</font></td></tr><tr><td bgcolor="white"><font point-size="14">Output shape: <b>(None, 400, 128)</b></font></td></tr></table>>, margin=0];
+1559519917904 [border=0, fontname=Helvetica, label=<<table border="0" cellborder="1" bgcolor="black" cellpadding="10"><tr><td colspan="1" bgcolor="black"><font point-size="16" color="white"><b>dropout</b> (Dropout)</font></td></tr><tr><td bgcolor="white"><font point-size="14">Output shape: <b>(None, 400, 128)</b></font></td></tr></table>>, margin=0];
+1559520120976 [border=0, fontname=Helvetica, label=<<table border="0" cellborder="1" bgcolor="black" cellpadding="10"><tr><td colspan="1" bgcolor="black"><font point-size="16" color="white"><b>conv1d</b> (Conv1D)</font></td></tr><tr><td bgcolor="white"><font point-size="14">Output shape: <b>(None, 396, 128)</b></font></td></tr></table>>, margin=0];
+1559520657552 [border=0, fontname=Helvetica, label=<<table border="0" cellborder="1" bgcolor="black" cellpadding="10"><tr><td colspan="1" bgcolor="black"><font point-size="16" color="white"><b>global_max_pooling1d</b> (GlobalMaxPooling1D)</font></td></tr><tr><td bgcolor="white"><font point-size="14">Output shape: <b>(None, 128)</b></font></td></tr></table>>, margin=0];
+1559606642192 [border=0, fontname=Helvetica, label=<<table border="0" cellborder="1" bgcolor="black" cellpadding="10"><tr><td colspan="1" bgcolor="black"><font point-size="16" color="white"><b>dense</b> (Dense)</font></td></tr><tr><td bgcolor="white"><font point-size="14">Output shape: <b>(None, 128)</b></font></td></tr></table>>, margin=0];
+1559606643984 [border=0, fontname=Helvetica, label=<<table border="0" cellborder="1" bgcolor="black" cellpadding="10"><tr><td colspan="1" bgcolor="black"><font point-size="16" color="white"><b>dropout_1</b> (Dropout)</font></td></tr><tr><td bgcolor="white"><font point-size="14">Output shape: <b>(None, 128)</b></font></td></tr></table>>, margin=0];
+1559606646992 [border=0, fontname=Helvetica, label=<<table border="0" cellborder="1" bgcolor="black" cellpadding="10"><tr><td colspan="1" bgcolor="black"><font point-size="16" color="white"><b>dense_1</b> (Dense)</font></td></tr><tr><td bgcolor="white"><font point-size="14">Output shape: <b>(None, 1)</b></font></td></tr></table>>, margin=0];
+1559500736464 -> 1559519917904  [penwidth=2];
+1559519917904 -> 1559520120976  [penwidth=2];
+1559520120976 -> 1559520657552  [penwidth=2];
+1559520657552 -> 1559606642192  [penwidth=2];
+1559606642192 -> 1559606643984  [penwidth=2];
+1559606643984 -> 1559606646992  [penwidth=2];
+}
