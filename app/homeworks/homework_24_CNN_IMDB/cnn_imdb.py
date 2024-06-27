@@ -7,13 +7,13 @@ from tensorflow.keras.datasets import imdb
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam  # , RMSprop, Nadam
 from tensorflow.keras.utils import model_to_dot
+from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 import graphviz
 from PIL import Image
 
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-print(f'Version Tensorflow: {tf.__version__}')
 
 # Задание гиперпараметров
 max_features = 20000  # Размер словаря
@@ -23,7 +23,7 @@ filters = 128  # Количество фильтров в сверточном �
 kernel_size = 5  # Размер ядра свертки
 hidden_dims = 128  # Размер скрытого слоя
 batch_size = 32
-epochs = 7  # 5, 6, 10
+epochs = 5  # 5, 6, 7, 8, 9, 10, 11
 
 # Загрузка и подготовка данных
 (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=max_features)
@@ -48,10 +48,10 @@ model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accurac
 history = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test), verbose=1)
 
 # Сохранение модели
-model.save('../../data/imdb_cnn_model.keras')
+model.save('../../models/imdb_cnn_model.keras')
 
 # Загрузка модели
-loaded_model = tf.keras.models.load_model('../../data/imdb_cnn_model.keras')
+loaded_model = load_model('../../models/imdb_cnn_model.keras')
 
 # Использование модели для предсказаний
 predictions = loaded_model.predict(x_test)
@@ -80,8 +80,8 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()
 
-plt.show()
 plt.savefig('../../data/training_history_cnn_model.png')
+plt.show()
 
 # Визуализация структуры модели с использованием graphviz напрямую и отображение картинки
 dot_model = model_to_dot(model, show_shapes=True, show_layer_names=True).to_string()
