@@ -40,6 +40,9 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer
 import spacy
 
+# Импорт необходимых библиотек для модели NLLB
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, GenerationConfig
+import torch
 
 
 app = FastAPI(title=settings.PROJECT_NAME)
@@ -516,6 +519,55 @@ async def nltk_preprocessing(request: DataRequest):
 async def spacy_preprocessing(request: DataRequest):
     response_data = {'spacy_cleaned_text': spacy_preprocessing_text(request.data)}
     return response_data
+
+# POST REQUEST 5 (translator_nllb, переводчик с использованием модели NLLB)
+# ==========================================================
+# ==========================================================
+
+
+class ChatbotRequest(BaseModel):
+    input_text: str
+    source_language = "eng_Latn"
+    target_language: str = "ukr_Cyrl"  # Язык целевой модели
+
+
+# Загрузка модели и токенизатора NLLB
+tokenizer_nllb = AutoTokenizer.from_pretrained("facebook/nllb-200-distilled-600M")
+model_nllb = AutoModelForSeq2SeqLM.from_pretrained("facebook/nllb-200-distilled-600M")
+
+
+@app.post("/translator_nllb/")
+async def chatbot_endpoint(request: ChatbotRequest):
+    try:
+        input_text = request.input_text
+        sentences = input_text.split('.')
+        target_language = request.target_language
+        source_language = request.source_language
+
+        tokenizer_nllb.src_lang = source_language
+        tokenizer_nllb.tgt_lang = target_language
+
+        # Перекладаємо текст
+        translated_sentences = []
+        max_length = 512
+        generation_config = GenerationConfig(max_length=max_length)  # Налаштовуємо параметри генерації
+
+        for sentence in sentences:
+            inputs = tokenizer_nllb(sentence, return_tensors="pt", max_length=max_length, truncation=True, padding=True)
+            inputs = {k: v.to(model_nllb.device) for k, v in inputs.items()}
+            outputs = model_nllb.generate(
+                **inputs,
+                max_length=max_length,
+                forced_bos_token_id=tokenizer_nllb.lang_code_to_id[target_language],
+                generation_config=generation_config)
+            translated_sentence = tokenizer_nllb.decode(outputs[0], skip_special_tokens=True)
+            translated_sentences.append(translated_sentence)
+
+        response_text = translated_sentences[0]
+
+        return {"response_text": response_text, "target_language": target_language}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 # ==========================================================
 # ==========================================================
