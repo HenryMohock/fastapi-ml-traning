@@ -1,0 +1,145 @@
+ДЗ 1. FastAPI template
+https://github.com/HenryMohock/fastapi-ml-traning
+
+ДЗ 2. Scraping
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_02_scraping
+
+ДЗ 3. Regular expression
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_03_regular_expression
+
+ДЗ 4. LDA
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_04_lda
+
+ДЗ 5. Класифікація тексту
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_05_classification_text
+
+ДЗ 6. Clustering
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_06_clustering
+
+ДЗ 7. Подібність рядків
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_07_similarity_lines
+
+ДЗ 8. NLTK. Preprocessing
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_08_NLTK_preprocessing
+
+ДЗ 9. Класифікатор в фінальному проекті
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_09_classifier
+
+ДЗ 10. Побудова n-gram моделі
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_10_N_gramm_models
+
+ДЗ 11. Порівняння POS теггерів
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_11_POS_tegging
+
+ДЗ 12. AMR
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_12_grafs
+
+ДЗ 13. Word embeddings
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_13_Word_embeddings
+
+ДЗ 14. Word2Vec model
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_14_World2Vec
+
+ДЗ 15. Doc2Vec
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_15_Doc2Vec
+
+ДЗ 16. Поділ корпусу на групи
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_16_groups
+
+ДЗ 17. spaCy preprocessing
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_17_SpaCy_preprocessing
+
+ДЗ 18. spaCy. Custom NER
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_18_SpaCy_NER
+
+ДЗ 19. spaCy. Pipeline
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_19_SpaCy_Pipline
+
+ДЗ 20. spaCy. Transformers
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_20_SpaCy_Transformers
+
+ДЗ 21. FastText, Glove
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_21_FastText_Glove
+
+ДЗ 22. Основи нейромереж
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_22_neural_networks
+
+ДЗ 23. CNN в NLP
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_24_CNN_IMDB
+
+ДЗ 24. Text classification with RNN
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_25_RNN_IMDB
+
+ДЗ 25. Siamese networks
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_27_Siamese_networks
+
+ДЗ 26. Архітектра трансформерів
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_26_Transformers
+
+ДЗ 27. Тренування трансформерів
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_29_Using_Transformers
+
+ДЗ 28. Трансформер в фінальному проекті
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_30_NLLB_chatbot
+
+ДЗ 29. Automatic Speech Recognition
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_31_speech_to_text
+
+ДЗ 30. Портфолио
+
+
+ДЗ 00 Video_Trim (це по за  курсом. Просто мені треба було обрізати відео, а інет пропонував якусь дичину...)
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_00_video_trim
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
