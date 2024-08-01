@@ -86,9 +86,9 @@ https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homewo
 https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_31_speech_to_text
 
 ДЗ 30. Портфолио
+https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_30_portfolio
 
-
-ДЗ 00 Video_Trim (це по за  курсом. Просто мені треба було обрізати відео, а інет пропонував якусь дичину...)
+ДЗ 00 Video_Trim (Це по за  курсом. Просто мені треба було обрізати відео, а інет пропонував якусь дичину...)
 https://github.com/HenryMohock/fastapi-ml-traning/tree/main/app/homeworks/homework_00_video_trim
 
 
